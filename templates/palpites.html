@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Meus Palpites - Bolão{% endblock %}
+{% block content %}
+<div class="card">
+  <h2>Meus palpites — Fase de Grupos (72 jogos)</h2>
+  <p style="color:#666;font-size:0.9rem;">
+    Preencha o placar que você imagina para cada confronto. Jogos cujo resultado já foi
+    lançado pelo organizador aparecem bloqueados (não é mais possível editar o palpite).
+    Clique em <strong>Salvar Palpites</strong> ao final da página.
+  </p>
+  <form method="post">
+    {% for jogo in jogos %}
+      {% set meu = meu_palpites if false else meus_palpites.get(jogo['id']) %}
+      <div class="jogo-box">
+        <div class="times">
+          Jogo {{ jogo['id'] }} — {{ jogo['time_a'] }} x {{ jogo['time_b'] }}
+          {% if jogo['gols_a'] is not none %}
+            <span class="placar-real">(resultado: {{ jogo['gols_a'] }} x {{ jogo['gols_b'] }})</span>
+            <span class="badge">FINALIZADO</span>
+          {% endif %}
+        </div>
+        <div>
+          {% if jogo['gols_a'] is not none %}
+            <strong>
+              {{ meu['gols_a'] if meu else '-' }} x {{ meu['gols_b'] if meu else '-' }}
+            </strong>
+            {% if meu %}
+              <span class="badge">{{ meu['pontos'] }} pts</span>
+            {% endif %}
+          {% else %}
+            <input type="number" min="0" name="gols_a_{{ jogo['id'] }}"
+                   value="{{ meu['gols_a'] if meu else '' }}" placeholder="0">
+            x
+            <input type="number" min="0" name="gols_b_{{ jogo['id'] }}"
+                   value="{{ meu['gols_b'] if meu else '' }}" placeholder="0">
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+    <div style="margin-top:18px;">
+      <button class="btn" type="submit">Salvar Palpites</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

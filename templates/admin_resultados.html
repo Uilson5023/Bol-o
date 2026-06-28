@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Lançar Resultados - Bolão{% endblock %}
+{% block content %}
+<div class="card">
+  <h2>⚙️ Lançar resultados das partidas (organizador)</h2>
+  <p style="color:#666;font-size:0.9rem;">
+    Ao salvar o resultado de um jogo, a pontuação de <strong>todos</strong> os
+    apostadores que palpitaram nessa partida é recalculada automaticamente e o
+    ranking é atualizado.
+  </p>
+  <table>
+    <thead>
+      <tr><th>Jogo</th><th>Confronto</th><th>Gols A</th><th>Gols B</th><th></th></tr>
+    </thead>
+    <tbody>
+      {% for jogo in jogos %}
+      <tr>
+        <form method="post">
+          <input type="hidden" name="jogo_id" value="{{ jogo['id'] }}">
+          <td>{{ jogo['id'] }}</td>
+          <td style="text-align:left;">{{ jogo['time_a'] }} x {{ jogo['time_b'] }}</td>
+          <td><input type="number" min="0" name="gols_a" value="{{ jogo['gols_a'] if jogo['gols_a'] is not none else '' }}"></td>
+          <td><input type="number" min="0" name="gols_b" value="{{ jogo['gols_b'] if jogo['gols_b'] is not none else '' }}"></td>
+          <td><button class="btn" type="submit">Salvar</button></td>
+        </form>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <p style="margin-top:16px;">
+    <a class="btn" href="{{ url_for('admin_recalcular_tudo') }}" style="text-decoration:none;display:inline-block;">
+      Recalcular pontuação de todos os jogos
+    </a>
+  </p>
+</div>
+{% endblock %}
