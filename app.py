@@ -36,7 +36,6 @@ GAMES_JSON = os.path.join(BASE_DIR, "games.json")
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "troque-esta-chave-em-producao"
-init_db()
 
 # Pontuação oficial (conforme aba "Regras" da planilha)
 PTS_PLACAR_EXATO = 10        # acertou o placar exato
@@ -449,6 +448,8 @@ def admin_recalcular_tudo():
     flash("Todas as pontuações foram recalculadas!", "success")
     return redirect(url_for("admin_resultados"))
 
-init_db()
+
+init_db()  # garante que o banco seja criado também quando o Gunicorn importar o módulo
+
 if __name__ == "__main__":
-     app.run(debug=True, host="0.0.0.0", port=5000)
+    app.run(debug=False, host="0.0.0.0", port=5000)
