@@ -36,6 +36,7 @@ GAMES_JSON = os.path.join(BASE_DIR, "games.json")
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "troque-esta-chave-em-producao"
+init_db()
 
 # Pontuação oficial (conforme aba "Regras" da planilha)
 PTS_PLACAR_EXATO = 10        # acertou o placar exato
